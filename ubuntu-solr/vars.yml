@@ -1,4 +1,8 @@
 ---
+<<<<<<< HEAD
+=======
+
+>>>>>>> 29d833ca5b864ce33a89b751447db55153f9877e
 download_dir: /tmp
 solr_dir: /opt/solr
 solr_version: 6.1.0
