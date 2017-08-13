@@ -1,11 +1,17 @@
 ---
+# Changed to Centos 6 due to issues installing npm using through yum on
+# Centos 7 at time of writing.
+
 - hosts: nodejs
   become: yes
+
+  vars_files:
+    - vars.yml
 
   pre_tasks:
     - name: Install Remi repo.
       yum:
-        name: "http://rpms.remirepo.net/enterprise/remi-release-7.rpm"
+        name: "http://rpms.remirepo.net/enterprise/remi-release-6.rpm"
         state: present
 
     - name: Import Remi GPG key.
@@ -15,8 +21,11 @@
     - name: Install EPEL repo.
       yum: name=epel-release state=present
 
-    - name: Ensure firewalld is stopped.
-      service: name=firewalld state=stopped
+    - name: Install selinux-python.
+      yum: name=libselinux-python state=present
+
+    - name: Ensure firewall is stopped.
+      service: name=iptables state=stopped
 
   roles:
     - nodejs
@@ -26,10 +35,13 @@
       file: "path={{ node_apps_location }} state=directory"
 
     - name: Copy example Node.js app to server.
-      copy: "src=app.js dest={{ node_apps_location }}"
+      copy: "src=app/{{ item }} dest={{ node_apps_location }}"
+      with_items:
+        - app.js
+        - package.json
 
     - name: Install app dependencies.
-      npm: path={{ node_apps_location }}/app
+      npm: path={{ node_apps_location }}
 
     - name: Check list of running Node.js apps.
       command: forever list
@@ -37,5 +49,5 @@
       changed_when: false
 
     - name: Start example Node.js app.
-      command: "forever start {{ node_apps_location }}/app/app.js"
-      when: "forever_list.stdout.find('{{ node_apps_location }}/app/app.js') == -1"
+      command: "forever start {{ node_apps_location }}/app.js"
+      when: "forever_list.stdout.find('{{ node_apps_location }}/app.js') == -1"

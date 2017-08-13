@@ -4,10 +4,15 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+#
+
+# Changed to Centos 6 due to issues installing npm using through yum on
+# Centos 7 at time of writing.
+
 Vagrant.configure(2) do |config|
   config.vm.network "private_network", ip: "192.168.60.200"
   config.vm.hostname = "node-app"
-  config.vm.box = "centos/7"
+  config.vm.box = "centos/6"
   config.ssh.insert_key = false
   config.vm.provider :virtualbox do |v|
     v.memory = 256
