@@ -1,5 +1,5 @@
 ---
-- hosts: node
+- hosts: nodejs
   become: yes
 
   pre_tasks:
@@ -18,10 +18,10 @@
     - name: Ensure firewalld is stopped.
       service: name=firewalld state=stopped
 
-roles:
-  - nodejs
+  roles:
+    - nodejs
 
-tasks:
+  tasks:
     - name: Ensure Node.js app folder exists.
       file: "path={{ node_apps_location }} state=directory"
 
