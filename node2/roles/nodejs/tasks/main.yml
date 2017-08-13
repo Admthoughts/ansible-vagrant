@@ -1,0 +1,6 @@
+---
+- name: Install nodejs and all its dependencies.
+  yum: name=npm state=present enablerepo=epel
+
+- name: Install forever module.
+  npm: name=forever global=yes state=present
