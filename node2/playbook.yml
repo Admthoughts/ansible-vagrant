@@ -5,9 +5,8 @@
 - hosts: nodejs
   become: yes
 
-  vars_files:
-    - defaults/main.yml
-    - vars/main.yml
+# Default vars files could be overwritten by stipulating a var file or
+# writing them explicitly here.
 
   pre_tasks:
     - name: Install Remi repo.
