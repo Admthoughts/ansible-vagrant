@@ -6,7 +6,8 @@
   become: yes
 
   vars_files:
-    - vars.yml
+    - defaults/main.yml
+    - vars/main.yml
 
   pre_tasks:
     - name: Install Remi repo.
